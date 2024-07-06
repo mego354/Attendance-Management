@@ -123,7 +123,7 @@ To Finally produce This:
 **Additional Resources**
 
 
-* Watch a video demonstration of the Web app in action: [Click Here](https://youtu.be/0q1bPAbHGvk).
+* Watch a video demonstration of the Web app in action: [Click Here](https://youtu.be/6o3CpS-8aC4).
 
 * Watch a video of the screens: [Click Here](https://youtu.be/HJsce49xAmY).
 
