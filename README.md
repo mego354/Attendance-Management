@@ -54,20 +54,18 @@ This Django application offers a robust solution for managing attendance seamles
         * Create events (lectures, labs) by selecting the course, lecturer, date, and student group.
         * Edit or delete events as needed.
         * Prepare events for student attendance.
+        * ![Device Detection](media/img1.png)
 
-![Device Detection](media/img1.png)
     * **User can:**
         * Update their personal data (password, device).
         * View the daily lecture schedule for efficient planning.
         * Scan QR codes to attend lectures conveniently.
-
 ![Device Detection](media/img2.png)
 
 * **Device Detection:** Utilizes ipware to identify:
     * Device type and brand for potential security checks.
     * Network IP to verify if the student is physically present in the lecture hall (prevents unauthorized attendance).
     * Device criteria against the database to ensure it belongs to the registered student (prevents proxy attendance).
-
 ![Device Detection](media/img3.png)
 
 * **API for Display Screens:** Delivers session data in JSON format, including:
