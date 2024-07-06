@@ -62,7 +62,7 @@ This Django application offers a robust solution for managing attendance seamles
         * View the daily lecture schedule for efficient planning.
         * Scan QR codes to attend lectures conveniently.
         
-  ![Device Detection](media/img2.png)
+           ![Device Detection](media/img2.png)
 
 * **Device Detection:** Utilizes ipware to identify:
     * Device type and brand for potential security checks.
