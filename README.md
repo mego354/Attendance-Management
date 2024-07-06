@@ -54,8 +54,8 @@ This Django application offers a robust solution for managing attendance seamles
         * Create events (lectures, labs) by selecting the course, lecturer, date, and student group.
         * Edit or delete events as needed.
         * Prepare events for student attendance.
-![Device Detection](media/img1.png)
 
+![Device Detection](media/img1.png)
     * **User can:**
         * Update their personal data (password, device).
         * View the daily lecture schedule for efficient planning.
@@ -123,6 +123,6 @@ To Finally produce This:
 
 * Watch a video demonstration of the Web app in action: [Click Here](https://youtu.be/0q1bPAbHGvk).
 
-* Watch a video of the screens: [Screen Video](media/screen.mp4).
+* Watch a video of the screens: [Click Here](https://youtu.be/HJsce49xAmY).
 
 **THANKS!**
