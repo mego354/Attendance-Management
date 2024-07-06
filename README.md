@@ -54,19 +54,22 @@ This Django application offers a robust solution for managing attendance seamles
         * Create events (lectures, labs) by selecting the course, lecturer, date, and student group.
         * Edit or delete events as needed.
         * Prepare events for student attendance.
-        * ![Device Detection](media/img1.png)
+   
+  ![Device Detection](media/img1.png)
 
     * **User can:**
         * Update their personal data (password, device).
         * View the daily lecture schedule for efficient planning.
         * Scan QR codes to attend lectures conveniently.
-![Device Detection](media/img2.png)
+        
+  ![Device Detection](media/img2.png)
 
 * **Device Detection:** Utilizes ipware to identify:
     * Device type and brand for potential security checks.
     * Network IP to verify if the student is physically present in the lecture hall (prevents unauthorized attendance).
     * Device criteria against the database to ensure it belongs to the registered student (prevents proxy attendance).
-![Device Detection](media/img3.png)
+    
+  ![Device Detection](media/img3.png)
 
 * **API for Display Screens:** Delivers session data in JSON format, including:
     * Case (1 - Professor with image, 2 - Professor without image, 3 - No session)
@@ -84,7 +87,7 @@ This Django application offers a robust solution for managing attendance seamles
     * Main images include homepage, loading page, empty image for professors without a system image, and an info page for messages (empty room, errors).
     * A script creates a zip file of all images for easy transfer to the screens.
 
-![Home Page](media/img4.jpg)
+  ![Home Page](media/img4.jpg)
 
 ## Screens for Display
 
@@ -104,7 +107,7 @@ This section presents session details on Dwin 7-inch screens.
     * Focuses on page and text display initially for clear information presentation.
     * Each text has a unique VP address for memory access and string display.
 
-![Image of DGUS software](media/img5.png)
+  ![Image of DGUS software](media/img5.png)
 
 * Microcontroller Software
     * ESP32-WROOM-32 with integrated WIFI for network connectivity.
@@ -113,7 +116,8 @@ This section presents session details on Dwin 7-inch screens.
     * Processes the data
 
 To Finally produce This:
-![Final Look](media/img6.jpeg)
+
+  ![Final Look](media/img6.jpeg)
 
 
 **Additional Resources**
