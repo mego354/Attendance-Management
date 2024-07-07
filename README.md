@@ -114,6 +114,7 @@ This section presents session details on Dwin 7-inch screens.
     * Connects to the network and sends GET requests to the web application's API to retrieve data.
     * Receives JSON data of the current session in the room (or upcoming session if none is active).
     * Processes the data
+    * see the src [here](ESP DWIN/dwin_lib.c)
 
 To Finally produce This:
 
