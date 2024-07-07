@@ -4,8 +4,8 @@
 #include <HTTPClient.h>
 #include <ArduinoJson.h>
 
-const char* ssid = "HUAWEI nova 9";
-const char* password = "100010000";
+const char* ssid = "WIFI ssid"; // e.g. HUAWEI nova 9
+const char* password = "WIFI password"; // e.g. 10001000
 
 bool fill = false;
 // Function to make HTTP request and return payload
@@ -74,3 +74,4 @@ void loop() {
   }
 
 }
+

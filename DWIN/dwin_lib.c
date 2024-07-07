@@ -3,7 +3,7 @@
 
 int department_name_length, college_name_length, subject_name_length, students_length, time_length, doctor_name_length;
 int error_length = 8;
-int refresh_rate = 60 * 5; //seconds
+int refresh_rate = 60 * 5; //seconds * menutes
 void GO_PAGE(uint16_t PG){ 
   Serial.write(0x5A);     Serial.write(0xA5);
   Serial.write(0x07);     Serial.write(0x82);
@@ -60,29 +60,6 @@ void conferm_case(String department_name, String college_name, String subject_na
     ERASE_TEXT(0x10, college_name_length);  ERASE_TEXT(0x20, department_name_length);
     ERASE_TEXT(0x30, subject_name_length);  ERASE_TEXT(0x40, students_length);
     ERASE_TEXT(0x50, time_length);
-    delay(500);
-}
-void conferm_case2(String doctor_name, String department_name, String college_name, String subject_name, String time, String students, int pic_id){
-    GO_PAGE(1);
-    delay(500);
-
-    SET_TEXT(0x10, college_name);    SET_TEXT(0x20, department_name);
-    SET_TEXT(0x30, subject_name);    SET_TEXT(0x40, students);
-    SET_TEXT(0x50, time);            SET_TEXT(0x60, doctor_name);
-    GO_PAGE(pic_id);
-
-    delay(1000 * refresh_rate);
-
-    college_name_length = college_name.length();
-    department_name_length = department_name.length();
-    subject_name_length = subject_name.length();
-    students_length = students.length();
-    time_length = time.length();
-    doctor_name_length = doctor_name.length();
-
-    ERASE_TEXT(0x10, college_name_length);  ERASE_TEXT(0x20, department_name_length);
-    ERASE_TEXT(0x30, subject_name_length);  ERASE_TEXT(0x40, students_length);
-    ERASE_TEXT(0x50, time_length);          ERASE_TEXT(0x60, doctor_name_length);
     delay(500);
 }
 
