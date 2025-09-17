@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BATU | Attendance Management System</title>
+    
+    <!-- Bootstrap CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/80a9f53b2d.js" crossorigin="anonymous"></script>
+    
+    <!-- GSAP for animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.2/gsap.min.js"></script>
+    
+    <style>
+        :root {
+            --bs-white: #fff;
+            --bs-black: #1a1a1a;
+            --bs-always-black: #1a1a1a;
+            --bs-gray: #343a40;
+            --bs-light: #f8f9fa;
+            --bs-always-light: #f8f9fa;
+            --bs-trans-light: #f5f5f5cc;
+            
+            --bs-Teal: #45B2A6;
+            --bs-Heavy-Teal: #007e2a;
+            --bs-Light-Teal: #32ffe7;
+            --bs-gold: #f7e061e0;
+            --bs-Heavy-gold: #d4b91cf1;
+            --bs-Heavy-white: #9ecdfc;
+            --bs-Green: #88C057;
+            --bs-Heavy-Green: #79dd21;
+            --bs-blue: #417dec;
+            --bs-light-white: #c2e1ff;
+            --bs-error: #e10e0e;
+
+            --bs-gradiant1: linear-gradient(45deg, rgba(38, 187, 130, 0.5), rgba(247, 224, 97, 0.5));
+            --bs-gradiant11: linear-gradient(45deg, rgba(38, 187, 130, 0.8), rgba(247, 224, 97, 0.8));
+            --bs-gradiant111: linear-gradient(45deg, rgba(247, 224, 97, 1.0), rgba(38, 187, 130, 0.8));
+            --bs-gradiant2: linear-gradient(to bottom, rgba(38, 187, 130, 0.70), rgba(247, 225, 97, 0.753) 80%);
+            --bs-gradiant3: linear-gradient(45deg, rgba(28, 139, 97, 0.418), rgba(182, 165, 72, 0.418));
+            --bs-gradiant-dark1: radial-gradient(#222, #101010);
+            --bs-gradiant-dark11: radial-gradient(#181414, #1b1515);
+
+            --bs-font-sans-serif: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            --sp: 2.5s;
+        }
+
+        /* General Styles */
+        html {
+            background-color: var(--bs-gray);
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse"><path d="M 50 0 L 0 0 0 50" fill="none" stroke="%2345B2A6" stroke-width="0.5" opacity="0.1"/></pattern></defs><rect width="100%" height="100%" fill="url(%23grid)"/></svg>');
+            background-repeat: repeat;
+            background-size: 50px 50px;
+            color: var(--bs-black);
+            font: 1rem/1.5 var(--bs-font-sans-serif);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        body.dark-mode {
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse"><path d="M 50 0 L 0 0 0 50" fill="none" stroke="%2332ffe7" stroke-width="0.5" opacity="0.1"/></pattern></defs><rect width="100%" height="100%" fill="url(%23grid)"/></svg>');
+            color: var(--bs-light-white);
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        main {
+            flex-grow: 1;
+            margin-inline: 2%;
+        }
+
+        /* Color Classes */
+        .color-Heavy-white { color: var(--bs-Heavy-white); }
+        .color-Heavy-Teal { color: var(--bs-Heavy-Teal); }
+        .color-black { color: var(--bs-black); }
+        .color-gold { color: var(--bs-gold); }
+        .color-Teal { color: var(--bs-Teal); }
+        .color-gray-dark { color: var(--bs-gray); }
+        .color-Light-Teal { color: var(--bs-Light-Teal); }
+        .color-always-black { color: #1a1a1a !important; }
+        .color-always-grey { color: #343a40 !important; }
+
+        /* Navbar */
+        .navbar {
+            position: relative;
+            z-index: 1; 
+            padding-bottom: 12px;
+            z-index: 10;
+        }
+
+        .navbar, .navbar a {
+            font-size: 1.1rem;
+        }
+
+        .navbar::before{
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--bs-gradiant2);
+            filter: blur(22px) !important;
+            z-index: -1;
+        }
+
+        .navbar-brand {
+            color: var(--bs-black);
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-nav .nav-link {
+            color: var(--bs-black);
+            text-align: center;
+        }
+
+        .navbar-nav .nav-link:hover, .navbar-brand:hover {
+            color: var(--bs-gold);
+        }
+
+        .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml;charset=UTF8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba%280, 0, 0, 0.5%29' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+        }
+
+        .navbar-toggler {
+            border-color: var(--bs-Teal);
+        }
+
+        .nav-item.dropdown .dropdown-menu {
+            background: var(--bs-gradiant11);
+        }
+
+        .dropdown-menu .dropdown-item:hover {
+            background-color: transparent;
+            color: var(--bs-gold);
+        }
+
+        /* Hero Section */
+        .hero-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            padding: 2rem;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            background: var(--bs-gradiant111);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: var(--bs-Heavy-Teal);
+            margin-bottom: 2rem;
+        }
+
+        .hero-description {
+            font-size: 1.1rem;
+            color: var(--bs-gray);
+            margin-bottom: 3rem;
+            line-height: 1.6;
+        }
+
+        /* Section Styling */
+        .section {
+            padding: 4rem 0;
+            margin: 2rem 0;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            color: var(--bs-Teal);
+            text-align: center;
+            margin-bottom: 3rem;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Forms */
+        .attendance-form::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--bs-gradiant3);
+            filter: blur(10px) !important;
+            z-index: -1;
+        }
+
+        .attendance-form {
+            position: relative;
+            z-index: 1;
+            background: var(--bs-gradiant1);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            min-width: 50%;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .attendance-form-title {
+            color: var(--bs-Heavy-gold);
+            border: 3px dashed var(--bs-Teal);
+            padding-bottom: 5px;
+            padding-inline: 25px;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .attendance-form label {
+            font-weight: bold;
+            color: var(--bs-gold);
+        }
+
+        .attendance-form input,
+        .attendance-form select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 1rem;
+            border: 1px solid var(--bs-Teal);
+            border-radius: 5px;
+        }
+
+        .attendance-form input:focus,
+        .attendance-form select:focus {
+            border-color: var(--bs-Green);
+            outline: none;
+        }
+
+        /* Submit Button */
+        .submit-btn {
+            background-color: var(--bs-Green);
+            color: var(--bs-gold);
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            width: 100%;
+        }
+
+        .submit-btn:hover {
+            background-color: var(--bs-Teal);
+        }
+
+        /* Table Styles */
+        .responsive-table table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 2rem;
+            background-color: var(--bs-white);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .responsive-table th, 
+        .responsive-table td {
+            padding: 12px;
+            border: 1px solid var(--bs-Teal);
+            text-align: left;
+            font-size: 1rem;
+        }
+
+        .responsive-table th {
+            background-color: var(--bs-Teal);
+            color: var(--bs-white);
+        }
+
+        .responsive-table tr:hover {
+            background-color: var(--bs-light-white);
+            color: var(--bs-always-black);
+        }
+
+        /* Container with background */
+        .image_bg_container {
+            position: relative;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            max-width: 900px;
+            width: 100%;
+            border-radius: 10px;
+            margin: 0 auto;
+            background-color: var(--bs-white);
+            text-shadow: 2px 2px 5px rgba(255, 255, 255, 0.2);
+        }
+
+        .image_bg_container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><circle cx="100" cy="100" r="80" fill="none" stroke="%2345B2A6" stroke-width="2" opacity="0.1"/><path d="M50 100 Q100 50 150 100 Q100 150 50 100" fill="none" stroke="%23f7e061" stroke-width="1" opacity="0.1"/></svg>');
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: center;
+            opacity: 0.2;
+            z-index: 1;
+        }
+
+        .image_bg_container * {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Event Details Styling */
+        .event-title {
+            font-size: 1.8rem;
+            color: var(--bs-Teal);
+            margin-bottom: 1rem;
+            text-align: center;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .event-details p {
+            margin: 0.8rem 0;
+            font-size: 1rem;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
+        }
+
+        .event-details p strong {
+            color: var(--bs-Teal);
+        }
+
+        /* Buttons */
+        .button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            color: var(--bs-white);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background-color: var(--bs-Teal);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--bs-Green);
+        }
+
+        .btn-outline {
+            background-color: var(--bs-trans-light);
+            border: 2px solid var(--bs-Teal);
+            color: var(--bs-Light-Teal);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--bs-Teal);
+            color: var(--bs-white);
+        }
+
+        .golden-btn {
+            border: 2px solid var(--bs-Heavy-gold);
+            color: var(--bs-Heavy-gold) !important;
+            background-color: var(--bs-white);
+        }
+
+        .golden-btn:hover {
+            background-color: var(--bs-Heavy-gold);
+            color: var(--bs-light) !important;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: var(--bs-black);
+            color: var(--bs-white);
+            padding: 2rem 0;
+        }
+
+        .footer-links {
+            padding: 0;
+            list-style: none;
+        }
+
+        .footer-links li {
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        .teal_green_link {
+            color: var(--bs-Teal);
+        }
+
+        .teal_green_link:hover {
+            color: var(--bs-Heavy-Teal);
+        }
+
+        .gold_green_link {
+            color: var(--bs-gold);
+        }
+
+        .gold_green_link:hover {
+            color: var(--bs-Heavy-Teal);
+        }
+
+        /* Modal Styles */
+        .modal-content {
+            background-color: var(--bs-always-black);
+        }
+
+        .modal-content .btn-close {
+            background-color: var(--bs-gold);
+            border-radius: 50%;
+        }
+
+        .modal-content h1, .modal-content h2, .modal-content h5 {
+            color: var(--bs-gold);
+        }
+
+        .modal-body a {
+            color: var(--bs-gold);
+        }
+
+        .modal-content p, .modal-content li {
+            color: var(--bs-Teal);
+        }
+
+        .modal-content strong {
+            color: var(--bs-Light-Teal);
+        }
+
+        /* Responsive */
+        @media screen and (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .attendance-form {
+                min-width: 90%;
+            }
+        }
+
+        /* Demo Notice */
+        .demo-notice {
+            background: var(--bs-gradiant111);
+            color: var(--bs-always-black);
+            padding: 1rem;
+            text-align: center;
+            font-weight: bold;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        /* Navigation for sections */
+        .section-nav {
+            position: fixed;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 100;
+        }
+
+        .section-nav a {
+            display: block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--bs-Teal);
+            margin: 10px 0;
+            opacity: 0.6;
+            transition: all 0.3s ease;
+        }
+
+        .section-nav a:hover,
+        .section-nav a.active {
+            opacity: 1;
+            transform: scale(1.2);
+        }
+    </style>
+</head>
+<body>
+    <!-- Demo Notice -->
+    <div class="demo-notice">
+        🎯 This is a Static Demo Showcase of the BATU Attendance Management System
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg" style="margin-top: 60px;">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#hero">
+                <span class="color-Light-Teal">B</span>
+                <span class="color-always-black">A</span>
+                <span class="color-gold">T</span>
+                <span class="color-Heavy-Teal">U</span>
+                <span class="color-always-black">|</span>
+                <span class="color-always-black">Attendance</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto me-4">
+                    <li class="nav-item">
+                        <button id="toggle-contrast" class="btn nav-link">
+                            <i id="dark_icon" class="fa-solid fa-sun fa-xl" style="color: #FFD43B;"></i>
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <a class="color-always-black nav-link" href="#hero">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="color-always-black nav-link" href="#auth">Authentication</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="color-always-black nav-link" href="#dashboard">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="color-always-black nav-link" href="#profile">Profile</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="color-always-black nav-link" href="#analytics">Analytics</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="color-always-black nav-link" href="#display">Display System</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Section Navigation -->
+    <div class="section-nav">
+        <a href="#hero" class="active"></a>
+        <a href="#auth"></a>
+        <a href="#dashboard"></a>
+        <a href="#profile"></a>
+        <a href="#analytics"></a>
+        <a href="#display"></a>
+    </div>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="hero" class="hero-section">
+            <div class="hero-content">
+                <h1 class="hero-title">BATU Attendance Management</h1>
+                <p class="hero-subtitle">Streamline Classroom Management with Advanced Technology</p>
+                <p class="hero-description">
+                    A comprehensive Django-based solution that automates attendance recording, 
+                    provides real-time session information, and enhances security through device detection. 
+                    Perfect for modern educational institutions seeking efficient classroom management.
+                </p>
+                <div class="d-flex gap-3 justify-content-center flex-wrap">
+                    <a href="#auth" class="button btn-primary">Get Started</a>
+                    <a href="#dashboard" class="button btn-outline">View Demo</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Authentication Section -->
+        <section id="auth" class="section">
+            <h2 class="section-title">Authentication System</h2>
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="attendance-form">
+                        <h3 class="attendance-form-title">Login</h3>
+                        <form>
+                            <div class="form-group">
+                                <label for="username">Username</label>
+                                <input type="text" id="username" name="username" value="demo_user" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Password</label>
+                                <input type="password" id="password" name="password" value="••••••••" readonly>
+                            </div>
+                            <button type="button" class="submit-btn" onclick="showDemoAlert('Login')">Login</button>
+                            <div class="text-center mt-3">
+                                <a href="#" class="color-Light-Teal">We Owe You a Hello? Register Now!</a><br>
+                                <a href="#" class="color-Light-Teal">Forget Your Password? Click Here</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="attendance-form">
+                        <h3 class="attendance-form-title">Register</h3>
+                        <form>
+                            <div class="form-group">
+                                <label for="reg_username">Username</label>
+                                <input type="text" id="reg_username" name="username" value="new_student" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="reg_fullname">Full Name</label>
+                                <input type="text" id="reg_fullname" name="fullname" value="Ahmed Mohamed" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="reg_email">Email</label>
+                                <input type="email" id="reg_email" name="email" value="ahmed@batu.edu.eg" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="reg_password">Password</label>
+                                <input type="password" id="reg_password" name="password" value="••••••••" readonly>
+                            </div>
+                            <button type="button" class="submit-btn" onclick="showDemoAlert('Registration')">Register</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="section">
+            <h2 class="section-title">Today's Schedule Dashboard</h2>
+            <div class="container">
+                <!-- Quick Attendance Card -->
+                <div class="row justify-content-center mb-4">
+                    <div class="col-md-8">
+                        <div class="image_bg_container">
+                            <h4 class="text-center"><strong>Data Structures</strong> lecture is Ready</h4>
+                            <div class="text-center">
+                                <button class="btn p-0" style="color: #FFD43B;" onclick="showDemoAlert('Attendance')">
+                                    <p class='m-0'>Click Here to <i class="fa-solid fa-fingerprint fa-xl"></i> Attend</p>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Today's Table -->
+                <div class="responsive-table">
+                    <div class="responsive-table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Event</th>
+                                    <th>Course</th>
+                                    <th>Time</th>
+                                    <th>Room</th>
+                                    <th>Attend</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>lecture</td>
+                                    <td>Data Structures</td>
+                                    <td>9:00 am</td>
+                                    <td>A101</td>
+                                    <td>
+                                        <button class="btn p-0" style="color: #FFD43B;" onclick="showDemoAlert('Attendance')">
+                                            <i class="fa-solid fa-fingerprint fa-xl"></i> Attend
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>section</td>
+                                    <td>Algorithms</td>
+                                    <td>11:00 am</td>
+                                    <td>A118</td>
+                                    <td><i class="fa-regular fa-circle-check fa-xl" style="color: #63E6BE;"></i></td>
+                                </tr>
+                                <tr>
+                                    <td>lecture</td>
+                                    <td>Database Systems</td>
+                                    <td>1:00 pm</td>
+                                    <td>A102</td>
+                                    <td><i class="fa-solid fa-hourglass-start fa-xl" style="color: #3d5f99;"></i></td>
+                                </tr>
+                                <tr>
+                                    <td>section</td>
+                                    <td>Software Engineering</td>
+                                    <td>3:00 pm</td>
+                                    <td>A103</td>
+                                    <td><i class="fa-regular fa-circle-xmark fa-xl" style="color: #da1010;"></i></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Profile Section -->
+        <section id="profile" class="section">
+            <h2 class="section-title">Student Profile & Settings</h2>
+            <div class="container">
+                <div class="image_bg_container">
+                    <h2 class="event-title">Personal Details</h2>
+                    <div class="event-details">
+                        <p><strong>Name:</strong> Ahmed Mohamed Hassan</p>
+                        <p><strong>National ID:</strong> 12345678901234</p>
+                        <p><strong>Type:</strong> Male</p>
+                    </div>
+                    
+                    <h2 class="event-title">Student Details</h2>
+                    <div class="event-details">
+                        <p><strong>College:</strong> Faculty of Engineering</p>
+                        <p><strong>Academic Year:</strong> 2024-2025 (P. 2024)</p>
+                        <p><strong>Academic ID:</strong> 2024001234</p>
+                        <p><strong>Department:</strong> Computer Science</p>
+                        <p><strong>Group:</strong> 1 (Class 1)</p>
+                        <p><strong>Last Update:</strong> Monday, 15-1-2024 2:30 pm</p>
+                    </div>
+
+                    <div class="mb-3 event-actions d-flex gap-3 justify-content-center flex-wrap">
+                        <button type="button" class="btn golden-btn" onclick="showDemoAlert('Update Fingerprint')">Update Finger Print</button>
+                        <button type="button" class="btn golden-btn" onclick="showDemoAlert('Change Password')">Change Password</button>
+                    </div>
+
+                    <h2 class="event-title">Active Courses</h2>
+                    <div class="responsive-list">
+                        <ul class="list-unstyled">
+                            <li class="mb-3 p-3 border rounded" style="background: var(--bs-light);">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="fw-bold">Data Structures</span>
+                                    <span class="text-muted">Review</span>
+                                </div>
+                                <div class="mt-2">
+                                    <small class="text-muted">Lectures: Attended 8/10 | Sections: Attended 5/6</small>
+                                </div>
+                            </li>
+                            <li class="mb-3 p-3 border rounded" style="background: var(--bs-light);">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="fw-bold">Algorithms</span>
+                                    <span class="text-muted">Review</span>
+                                </div>
+                                <div class="mt-2">
+                                    <small class="text-muted">Lectures: Attended 7/9 | Sections: Attended 4/5</small>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Analytics Section -->
+        <section id="analytics" class="section">
+            <h2 class="section-title">Attendance Analytics & Management</h2>
+            <div class="container">
+                <!-- Admin Controls Preview -->
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="image_bg_container">
+                            <h3 class="event-title">Admin Controls</h3>
+                            <div class="event-details">
+                                <p><strong>Create Events:</strong> Lectures and Sections</p>
+                                <p><strong>Manage Students:</strong> Groups and Classes</p>
+                                <p><strong>Room Management:</strong> A101, A118, A102, A103</p>
+                                <p><strong>Reports:</strong> Excel exports and email delivery</p>
+                            </div>
+                            <div class="d-flex gap-2 justify-content-center flex-wrap">
+                                <button type="button" class="button btn-outline" onclick="showDemoAlert('Create Lecture')">New Lecture</button>
+                                <button type="button" class="button btn-outline" onclick="showDemoAlert('Create Section')">New Section</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="image_bg_container">
+                            <h3 class="event-title">Device Detection</h3>
+                            <div class="event-details">
+                                <p><strong>IP Verification:</strong> Ensures physical presence</p>
+                                <p><strong>Device Fingerprinting:</strong> Prevents proxy attendance</p>
+                                <p><strong>Security Checks:</strong> Brand and type validation</p>
+                                <p><strong>Network Analysis:</strong> Location verification</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Statistics Cards -->
+                <div class="row">
+                    <div class="col-md-3 mb-3">
+                        <div class="card text-center" style="background: var(--bs-gradiant1);">
+                            <div class="card-body">
+                                <h5 class="card-title color-Heavy-gold">Total Students</h5>
+                                <h2 class="color-Teal">1,247</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="card text-center" style="background: var(--bs-gradiant1);">
+                            <div class="card-body">
+                                <h5 class="card-title color-Heavy-gold">Active Sessions</h5>
+                                <h2 class="color-Teal">23</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="card text-center" style="background: var(--bs-gradiant1);">
+                            <div class="card-body">
+                                <h5 class="card-title color-Heavy-gold">Attendance Rate</h5>
+                                <h2 class="color-Teal">87%</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="card text-center" style="background: var(--bs-gradiant1);">
+                            <div class="card-body">
+                                <h5 class="card-title color-Heavy-gold">Rooms Connected</h5>
+                                <h2 class="color-Teal">18</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Display Screens Info -->
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <div class="image_bg_container">
+                            <h3 class="event-title">Display System Integration</h3>
+                            <div class="event-details">
+                                <p><strong>Hardware:</strong> ESP32 Microcontroller + DWIN 7-inch screens</p>
+                                <p><strong>Real-time Data:</strong> Session info, professor details, room status</p>
+                                <p><strong>API Integration:</strong> JSON data delivery for screen updates</p>
+                                <p><strong>Network:</strong> WiFi connectivity for seamless communication</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- DWIN Display System Section -->
+        <section id="display" class="section">
+            <h2 class="section-title">DWIN Display System</h2>
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="image_bg_container">
+                            <h3 class="event-title">Hardware Components</h3>
+                            <div class="event-details">
+                                <p><strong>ESP32 Microcontroller:</strong> ESP32-WROOM-32 with integrated WiFi</p>
+                                <p><strong>DWIN Screen:</strong> 7-inch model "DMG80480T70_15WTR"</p>
+                                <p><strong>Custom PCB:</strong> Designed specifically for the circuit</p>
+                                <p><strong>Communication:</strong> UART protocol for data transfer</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- DWIN Screen Images -->
+                <div class="row mt-4">
+                    <div class="col-md-6 mb-3">
+                        <div class="card">
+                            <img src="media/img4.jpg" class="card-img-top" alt="DWIN Home Page" style="height: 300px; object-fit: cover;">
+                            <div class="card-body">
+                                <h5 class="card-title">DWIN Home Page</h5>
+                                <p class="card-text">Main display interface showing session information and professor details.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="card">
+                            <img src="media/img5.png" class="card-img-top" alt="DGUS Software" style="height: 300px; object-fit: cover;">
+                            <div class="card-body">
+                                <h5 class="card-title">DGUS Software Interface</h5>
+                                <p class="card-text">DWIN Technology software for page creation, text display, and touch interaction.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Final Display Result -->
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <div class="image_bg_container text-center">
+                            <h3 class="event-title">Final Display Result</h3>
+                            <img src="media/img6.jpeg" class="img-fluid rounded" alt="Final DWIN Display" style="max-height: 400px; width: auto;">
+                            <div class="event-details mt-3">
+                                <p><strong>Real-time Session Display:</strong> Shows current professor, course, time, and room information</p>
+                                <p><strong>Dynamic Updates:</strong> Automatically refreshes when new sessions begin</p>
+                                <p><strong>Professional Interface:</strong> Clean, readable display for students and staff</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container text-center">
+            <p class="m-0">
+                <span class="color-gold">
+                    © 2024 Borg Al-Arab Technological University, All Rights Reserved
+                </span> 
+            </p>
+            <ul class="list-inline footer-links mt-2 mb-1">
+                <li class="list-inline-item">
+                    <a href="#" class="teal_green_link" data-bs-toggle="modal" data-bs-target="#contactModal">Contact Us</a>
+                </li>
+                <li class="list-inline-item">
+                    <a href="#" class="teal_green_link" data-bs-toggle="modal" data-bs-target="#privacyModal">Privacy Policy</a>
+                </li>
+                <li class="list-inline-item">
+                    <a href="#" class="teal_green_link" data-bs-toggle="modal" data-bs-target="#termsModal">Terms of Service</a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Contact Us Modal -->
+        <div class="modal fade" id="contactModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Contact Us</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>If you have any questions about Our Terms of Service, please contact us at:</p>
+                        <p>Email: <a class="gold_green_link" href="mailto:mahmoudmegahd010000@gmail.com">mahmoudmegahd010000@gmail.com</a><br>
+                        <p>WhatsApp: <a class="gold_green_link" href="https://wa.link/7xc1yy">01026004642</a><br>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Privacy Policy Modal -->
+        <div class="modal fade" id="privacyModal" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Privacy Policy</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <h2>Introduction</h2>
+                        <p>At Borg Al-Arab Technological University ("we," "our," "us"), we value your privacy. This privacy policy outlines how we collect, use, and protect your personal information when using our attendance app ("App").</p>
+                        
+                        <h2>Information We Collect</h2>
+                        <p>We collect personal data from students, staff, and administrators to provide the functionality of the App. The information we collect includes:</p>
+                        <ul>
+                            <li><strong>Student Information:</strong> Full name, student ID, email address, academic department, and year of study.</li>
+                            <li><strong>Attendance Data:</strong> Attendance records, class schedules, and lecture participation details.</li>
+                            <li><strong>Device Information:</strong> IP address, device type, operating system, and other related data collected for security and troubleshooting purposes.</li>
+                        </ul>
+                        
+                        <h2>Data Security</h2>
+                        <p>We are committed to ensuring the security of your personal data. We use technical, administrative, and physical security measures to protect your information from unauthorized access, disclosure, alteration, and destruction.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Terms of Service Modal -->
+        <div class="modal fade" id="termsModal" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Terms of Service</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <h2>Introduction</h2>
+                        <p>Welcome to the attendance app for Borg Al-Arab Technological University ("we," "our," "us"). By accessing or using our app ("App"), you agree to comply with these Terms of Service.</p>
+                        
+                        <h2>Eligibility</h2>
+                        <p>You must be a student, staff member, or authorized personnel of Borg Al-Arab Technological University to use this App.</p>
+                        
+                        <h2>Use of the App</h2>
+                        <p>You agree to use the App only for lawful purposes and in accordance with these Terms of Service. You agree not to:</p>
+                        <ul>
+                            <li>Use the App in any way that violates any applicable federal, state, local, or international law or regulation.</li>
+                            <li>Engage in any conduct that restricts or inhibits anyone's use or enjoyment of the App.</li>
+                            <li>Introduce any viruses, trojan horses, worms, or other material that is malicious or technologically harmful.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+    <script>
+        // Dark mode toggle
+        document.getElementById('toggle-contrast').addEventListener('click', function() {
+            document.body.classList.toggle('dark-mode');
+            const icon = document.getElementById('dark_icon');
+            if (document.body.classList.contains('dark-mode')) {
+                icon.className = 'fa-solid fa-moon fa-xl';
+                icon.style.color = '#32ffe7';
+            } else {
+                icon.className = 'fa-solid fa-sun fa-xl';
+                icon.style.color = '#FFD43B';
+            }
+        });
+
+        // Section navigation
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.section-nav a');
+
+        function updateActiveNav() {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (scrollY >= (sectionTop - 200)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', updateActiveNav);
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Demo alert function
+        function showDemoAlert(action) {
+            alert(`🎯 Demo Mode: ${action} functionality would be executed here.\n\nThis is a static showcase of the BATU Attendance Management System.`);
+        }
+
+        // Add some animations on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all sections for animation
+        document.querySelectorAll('section').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(30px)';
+            section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(section);
+        });
+
+        // Initialize first section as visible
+        document.querySelector('#hero').style.opacity = '1';
+        document.querySelector('#hero').style.transform = 'translateY(0)';
+    </script>
+</body>
+</html>

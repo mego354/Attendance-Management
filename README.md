@@ -4,6 +4,9 @@
 
 This project tackles common challenges faced in educational settings by providing a comprehensive solution to streamline and enhance classroom management. It consists of a website and a display system that work together to improve the efficiency and security of student attendance tracking while providing essential session information.
 
+## 🚀 Live Demo
+[Visit the Website](https://mego354.github.io/Attendance-Management/)
+
 * **Website:** Automates attendance recording, saving time for both students and instructors while ensuring accurate and secure data.
 * **Display System:** Shows real-time information about ongoing sessions, providing students with quick access to details.
 
